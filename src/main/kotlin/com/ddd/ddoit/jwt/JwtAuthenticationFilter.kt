@@ -1,13 +1,8 @@
 package com.ddd.ddoit.jwt
 
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.web.filter.GenericFilterBean
 import org.springframework.web.filter.OncePerRequestFilter
 import javax.servlet.FilterChain
-import javax.servlet.ServletRequest
-import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -19,11 +14,12 @@ class JwtAuthenticationFilter(var jwtTokenProvider: JwtTokenProvider) : OncePerR
             filterChain.doFilter(request, response)
             return
         }
-        if (!jwtTokenProvider.validateToken(token.split(" ")[1].trim())) {
+        val bearerToken = token.split(" ")[1].trim()
+        if (!jwtTokenProvider.validateToken(bearerToken)) {
             filterChain.doFilter(request, response)
             return
         }
-        SecurityContextHolder.getContext().authentication = jwtTokenProvider.getAuthentication(token)
+        SecurityContextHolder.getContext().authentication = jwtTokenProvider.getAuthentication(bearerToken)
         filterChain.doFilter(request, response)
     }
 

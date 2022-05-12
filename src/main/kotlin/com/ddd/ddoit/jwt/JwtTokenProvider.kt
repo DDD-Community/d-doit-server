@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest
 class JwtTokenProvider(val userDetailsService: UserDetailsService) {
 
     companion object {
-        const val JWT_SECRET = "keyName123141asdafafvadssss"
+        const val JWT_SECRET = "keyName123141asdafafvadssssqweqwuiasdy89pgadhyuiadgvjnk"
         const val JWT_EXPIRED_TIME = "100"
     }
 
@@ -24,25 +24,27 @@ class JwtTokenProvider(val userDetailsService: UserDetailsService) {
         return Keys.hmacShaKeyFor(JWT_SECRET.toByteArray(Charsets.UTF_8))
     }
 
-    fun createToken(userPK: Long, roles: List<String>?): String{
-        val claims = Jwts.claims().setSubject(userPK.toString());
+    fun createToken(email: String, roles: List<String>?): String{
+        val claims = Jwts.claims().setSubject(email)
         claims["roles"] = roles
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(Date())
                 .setExpiration(Date(System.currentTimeMillis()+60*24*1000))
-                .signWith(getSignKey(), SignatureAlgorithm.ES256)
+                .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact()
     }
 
     fun getAuthentication(token: String): Authentication{
-        val detail = userDetailsService.loadUserByUsername(getTokenUserPk(token))
+        val detail = userDetailsService.loadUserByUsername(getTokenSubject(token));
         return UsernamePasswordAuthenticationToken(detail, "", detail.authorities)
     }
 
-    fun getTokenUserPk(token: String): String{
-        return Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).body.subject
-}
+    fun getTokenSubject(token: String): String{
+        return Jwts.parserBuilder().setSigningKey(getSignKey()).build()
+            .parseClaimsJws(token).body.subject
+    }
+
 
     fun resolveToken(request : HttpServletRequest): String?{
         return request.getHeader(HttpHeaders.AUTHORIZATION)

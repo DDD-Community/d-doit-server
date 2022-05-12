@@ -1,13 +1,10 @@
 package com.ddd.ddoit.config
 
-import com.ddd.ddoit.domain.UserService
 import com.ddd.ddoit.jwt.JwtAuthenticationFilter
 import com.ddd.ddoit.jwt.JwtTokenProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
-import org.springframework.security.config.annotation.authentication.configurers.userdetails.DaoAuthenticationConfigurer
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -16,7 +13,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import javax.servlet.http.HttpServletResponse
 
 @EnableWebSecurity
-class SecurityConfig(var jwtTokenProvider: JwtTokenProvider, val userService: UserService) : WebSecurityConfigurerAdapter(){
+@EnableGlobalMethodSecurity(jsr250Enabled = true)
+class SecurityConfig(var jwtTokenProvider: JwtTokenProvider) : WebSecurityConfigurerAdapter(){
 
     override fun configure(http: HttpSecurity) {
         http.csrf().disable()
