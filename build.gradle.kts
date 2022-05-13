@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
 	id("org.springframework.boot") version "2.6.7"
@@ -94,4 +95,8 @@ tasks.register<Copy>("copyOasToSwagger") {
 	from("$buildDir/api-spec/openapi3.yaml") // 복제할 yaml 파일 타겟팅
 	into("src/main/resources/static/swagger-ui/.") // 타겟 디렉토리로 파일 복제
 	dependsOn("openapi3") // openapi3 task가 먼저 실행되도록 설정
+}
+
+tasks.named<BootJar>("bootJar") {
+	launchScript()
 }

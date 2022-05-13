@@ -27,7 +27,7 @@ class AuthController(val userService: UserService, val jwtTokenProvider: JwtToke
 
     @GetMapping("/test")
     fun test(): String{
-        return "권한이 있어서 노출이 가능합니다."
+        return "test"
     }
 
 }
