@@ -28,5 +28,5 @@ jobs:
         
     
     - name: 빌드파일 위치 체크
-      run: echo pwd 
+      run: echo `pwd`
     
