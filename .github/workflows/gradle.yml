@@ -42,5 +42,5 @@ jobs:
     - name: S3 Sync
       run: |
           aws s3 sync \
-          --acl public-read \
+          --acl private \
           ./build/libs/ s3://d-doit-deploy/dev 
