@@ -43,5 +43,4 @@ jobs:
       run: |
           aws s3 sync \
           --acl public-read \
-          --recursive \
           ./build/libs/ s3://d-doit-deploy/dev 
