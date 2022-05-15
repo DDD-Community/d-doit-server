@@ -41,6 +41,6 @@ jobs:
     
     - name: S3 Sync
       run: |
-          aws s3 sync \
+          aws s3 sync ./build/libs/*.jar s3://d-doit-deploy/dev \
           --region ap-northeast-2 \
-          --acl public-read ./build/libs/*.jar s3://d-doit-deploy/dev
+          --acl public-read 
