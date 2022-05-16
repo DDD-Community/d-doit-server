@@ -27,7 +27,7 @@ jobs:
         arguments: build
         
     - name: Zip Build file
-      run: mkdir ./build/zip && cp -r ./script ./appspec.yml ./build/zip  && cd build/libs && zip -qq -r ../zip/deploy.zip .
+      run: mkdir ./build/zip && cp -r ./script ./appspec.yml ./build/libs  && cd build/libs && zip -qq -r ../zip/deploy.zip .
 
     - name: AWS CONFIG
       uses: aws-actions/configure-aws-credentials@v1
