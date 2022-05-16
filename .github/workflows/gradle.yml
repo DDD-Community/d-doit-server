@@ -27,7 +27,7 @@ jobs:
         arguments: build
         
     - name: Zip Build file
-      run: zip -qq -r ./build/libs/$GITHUB_SHA.zip ./build/libs
+      run: zip -qq -r ./build/libs/deploy.zip ./build/libs
 
     - name: ls
       run: ls -al ./build/libs
@@ -46,7 +46,7 @@ jobs:
       run: |
           aws s3 sync \
           --acl private \
-          ./build/libs/$GITHUB_SHA.zip s3://d-doit-deploy/dev 
+          ./build/libs/deploy.zip s3://d-doit-deploy/dev 
     
     - name: code Deploy
       run: |
