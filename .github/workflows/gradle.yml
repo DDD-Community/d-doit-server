@@ -26,8 +26,8 @@ jobs:
       with:
         arguments: build
         
-    - name: 빌드파일 위치 체크
-      run: echo `pwd`
+    - name: Zip Build file
+      run: zip -qq -r ./$GITHUB_SHA.zip .
       
     - name: AWS CONFIG 
       uses: aws-actions/configure-aws-credentials@v1
@@ -43,10 +43,10 @@ jobs:
       run: |
           aws s3 sync \
           --acl private \
-          ./build/libs/ s3://d-doit-deploy/dev 
+          ./build/libs/$GITHUB_SHA.zip s3://d-doit-deploy/dev 
     
     - name: code Deploy
       run: |
         aws deploy create-deployment --application-name d-doit-deploy \
         --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name d-doit-deploy-dev \
-        --s3-location bucket=${{secrets.AWS_S3_BUCKET}},bundleType=jar,key=d-doit-0.0.1-SNAPSHOT.jar
+        --s3-location bucket=${{secrets.AWS_S3_BUCKET}},bundleType=zip,key=dev/$GITHUB_SHA.zip
