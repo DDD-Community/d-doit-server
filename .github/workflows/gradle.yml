@@ -44,3 +44,9 @@ jobs:
           aws s3 sync \
           --acl private \
           ./build/libs/ s3://d-doit-deploy/dev 
+    
+    - name: code Deploy
+      run: |
+        aws deploy create-deployment --application-name d-doit-deploy \
+        --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name d-doit-deploy-dev \
+        --s3-location bucket=${{AWS_S3_BUCKET}}
