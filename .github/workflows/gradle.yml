@@ -46,10 +46,10 @@ jobs:
       run: |
           aws s3 sync \
           --acl private \
-          ./build/libs/deploy.zip s3://d-doit-deploy/dev 
+          ./build/libs/*.zip s3://d-doit-deploy/dev 
     
     - name: code Deploy
       run: |
         aws deploy create-deployment --application-name d-doit-deploy \
         --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name d-doit-deploy-dev \
-        --s3-location bucket=${{secrets.AWS_S3_BUCKET}},bundleType=zip,key=dev/$GITHUB_SHA.zip
+        --s3-location bucket=${{secrets.AWS_S3_BUCKET}},bundleType=zip,key=dev/deploy.zip
