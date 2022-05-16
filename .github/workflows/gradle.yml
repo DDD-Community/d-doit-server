@@ -27,7 +27,7 @@ jobs:
         arguments: build
         
     - name: Zip Build file
-      run: mkdir ./build/zip && zip -qq -r ./build/zip/deploy.zip ./build/libs
+      run: mkdir ./build/zip && zip -qq -r ./build/zip/deploy.zip ./build/libs/*.jar
 
     - name: ls
       run: ls -al ./build/libs
