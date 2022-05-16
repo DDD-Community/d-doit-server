@@ -26,10 +26,10 @@ jobs:
       with:
         arguments: build
         
-    - name: 빌드파일 위치 체크
-      run: echo `pwd`
-      
-    - name: AWS CONFIG 
+    - name: Zip Build file
+      run: mkdir ./build/zip && cp -r ./script ./appspec.yml ./build/libs  && cd build/libs && zip -qq -r ../zip/deploy.zip .
+
+    - name: AWS CONFIG
       uses: aws-actions/configure-aws-credentials@v1
       with:
         # AWS Access Key ID. This input is required if running in the GitHub hosted environment. It is optional if running in a self-hosted environment that already has AWS credentials, for example on an EC2 instance.
@@ -43,4 +43,10 @@ jobs:
       run: |
           aws s3 sync \
           --acl private \
-          ./build/libs/ s3://d-doit-deploy/dev 
+          ./build/zip/ s3://d-doit-deploy/dev 
+    
+    - name: code Deploy
+      run: |
+        aws deploy create-deployment --application-name d-doit-deploy \
+        --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name d-doit-deploy-dev \
+        --s3-location bucket=${{secrets.AWS_S3_BUCKET}},bundleType=zip,key=dev/deploy.zip
