@@ -29,6 +29,9 @@ jobs:
     - name: Zip Build file
       run: zip -qq -r ./build/libs/$GITHUB_SHA.zip ./build/libs
 
+    - name: ls
+      run: ls -al ./build/libs
+
     - name: AWS CONFIG
       uses: aws-actions/configure-aws-credentials@v1
       with:
