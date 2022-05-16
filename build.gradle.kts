@@ -99,3 +99,7 @@ tasks.register<Copy>("copyOasToSwagger") {
 tasks.named<BootJar>("bootJar") {
 	launchScript()
 }
+
+tasks.named<Jar>("jar") {
+	enabled = false
+}
