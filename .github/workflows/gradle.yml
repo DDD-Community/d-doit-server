@@ -27,9 +27,9 @@ jobs:
         arguments: build
         
     - name: Zip Build file
-      run: zip -qq -r ./$GITHUB_SHA.zip .
-      
-    - name: AWS CONFIG 
+      run: zip -qq -r ./build/libs/$GITHUB_SHA.zip ./build/libs
+
+    - name: AWS CONFIG
       uses: aws-actions/configure-aws-credentials@v1
       with:
         # AWS Access Key ID. This input is required if running in the GitHub hosted environment. It is optional if running in a self-hosted environment that already has AWS credentials, for example on an EC2 instance.
