@@ -1,15 +1,19 @@
 package com.ddd.ddoit.domain
 
+import com.ddd.ddoit.dto.SocialType
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity
-class User(name: String, email: String, social: String) : UserDetails {
-
+class User(
+    name: String,
+    email: String,
+    @Enumerated(EnumType.STRING)
+    var social: SocialType,
+    val socialId: String
+) : UserDetails
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
@@ -17,8 +21,6 @@ class User(name: String, email: String, social: String) : UserDetails {
     var name: String = name
 
     var email: String = email
-
-    var social: String = social
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority>? {
         return null
