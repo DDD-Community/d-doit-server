@@ -1,16 +1,11 @@
 package com.ddd.ddoit.controller
 
-import com.ddd.ddoit.domain.User
-import com.ddd.ddoit.domain.UserService
+import com.ddd.ddoit.service.UserService
 import com.ddd.ddoit.dto.AuthRequest
 import com.ddd.ddoit.dto.HttpResponse
 import com.ddd.ddoit.jwt.JwtTokenProvider
-import org.apache.coyote.Response
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

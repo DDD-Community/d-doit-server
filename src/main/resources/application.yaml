@@ -11,6 +11,3 @@ spring:
     generate-ddl: true
     hibernate:
         ddl-auto: create
-  flyway:
-    enabled: true
-    baseline-on-migrate: true

@@ -1,7 +1,9 @@
-package com.ddd.ddoit.domain
+package com.ddd.ddoit.service
 
+import com.ddd.ddoit.domain.User
 import com.ddd.ddoit.dto.AuthRequest
 import com.ddd.ddoit.dto.SocialType
+import com.ddd.ddoit.repository.UserRepository
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
