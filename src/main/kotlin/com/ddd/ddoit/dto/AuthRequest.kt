@@ -1,5 +1,7 @@
 package com.ddd.ddoit.dto
 
-class AuthRequest(var email: String, var name: String) {
-
-}
+class AuthRequest(
+    var email: String,
+    var name: String,
+    var socialId: String,
+)

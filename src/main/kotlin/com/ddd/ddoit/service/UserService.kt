@@ -15,10 +15,10 @@ class UserService(var userRepository: UserRepository) : UserDetailsService {
     }
 
     fun signupUser(req: AuthRequest): Long? {
-       return userRepository.save(User(name = req.name, email = req.email, social = SocialType.KAKAO.social)).id
+       return userRepository.save(User(name = req.name, email = req.email, social = SocialType.KAKAO, socialId = req.socialId)).id
     }
 
     fun login(req: AuthRequest): User {
-        return userRepository.findByEmail(req.email)?: throw IllegalAccessException("없슴니당~~")
+        return userRepository.findBySocialIdAndSocial(req.socialId, SocialType.KAKAO)?: throw IllegalAccessException("없슴니당~~")
     }
 }
