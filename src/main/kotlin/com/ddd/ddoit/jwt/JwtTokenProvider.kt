@@ -1,5 +1,6 @@
 package com.ddd.ddoit.jwt
 
+import com.ddd.ddoit.dto.SocialType
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
@@ -24,8 +25,8 @@ class JwtTokenProvider(val userDetailsService: UserDetailsService) {
         return Keys.hmacShaKeyFor(JWT_SECRET.toByteArray(Charsets.UTF_8))
     }
 
-    fun createToken(email: String, roles: List<String>?): String{
-        val claims = Jwts.claims().setSubject(email)
+    fun createToken(socialId: String, socialType: SocialType, roles: List<String>?): String{
+        val claims = Jwts.claims().setSubject(socialType.code+"_"+socialId)
         claims["roles"] = roles
         return Jwts.builder()
                 .setClaims(claims)

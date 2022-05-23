@@ -10,8 +10,9 @@ import org.springframework.stereotype.Service
 
 @Service
 class UserService(var userRepository: UserRepository) : UserDetailsService {
-    override fun loadUserByUsername(username: String): UserDetails {
-        return userRepository.findByEmail(username)?: throw IllegalAccessException("없서용~~")
+    override fun loadUserByUsername(token: String): UserDetails {
+        val array = token.split("_")
+        return userRepository.findBySocialIdAndSocial(array[1], SocialType.KAKAO)?: throw IllegalAccessException("없서용~~")
     }
 
     fun signupUser(req: AuthRequest): Long? {
