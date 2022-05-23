@@ -53,6 +53,15 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("com.epages:restdocs-api-spec-mockmvc:0.16.0")
+}
+
+tasks.named<BootJar>("bootJar") {
+	launchScript()
+}
+
+tasks.named<Jar>("jar") {
+	enabled = false
 }
 
 tasks.withType<KotlinCompile> {
@@ -90,16 +99,16 @@ tasks.register<Copy>("copyDocs"){
 
 
 tasks.register<Copy>("copyOasToSwagger") {
-	delete("src/main/resources/static/swagger-ui/openapi3.yaml") // 기존 yaml 파일 삭제
+	delete("src/main/resources/static/swagger/openapi3.yaml") // 기존 yaml 파일 삭제
 	from("$buildDir/api-spec/openapi3.yaml") // 복제할 yaml 파일 타겟팅
-	into("src/main/resources/static/swagger-ui/.") // 타겟 디렉토리로 파일 복제
+	into("src/main/resources/static/swagger/.") // 타겟 디렉토리로 파일 복제
 	dependsOn("openapi3") // openapi3 task가 먼저 실행되도록 설정
 }
 
-tasks.named<BootJar>("bootJar") {
-	launchScript()
-}
-
-tasks.named<Jar>("jar") {
-	enabled = false
+openapi3 {
+	this.setServer("https://localhost:8080") // list로 넣을 수 있어 각종 환경의 URL들을 넣을 수 있음!
+	title = "My API"
+	description = "My API description"
+	version = "0.1.0"
+	format = "yaml" // or json
 }
