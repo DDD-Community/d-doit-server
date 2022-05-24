@@ -106,7 +106,7 @@ tasks.register<Copy>("copyOasToSwagger") {
 }
 
 openapi3 {
-	this.setServer("https://localhost:8080") // list로 넣을 수 있어 각종 환경의 URL들을 넣을 수 있음!
+	this.setServer("http://localhost:8080") // list로 넣을 수 있어 각종 환경의 URL들을 넣을 수 있음!
 	title = "My API"
 	description = "My API description"
 	version = "0.1.0"
