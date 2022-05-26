@@ -27,7 +27,7 @@ jobs:
         arguments: build
         
     - name: Zip Build file
-      run: mkdir ./build/zip && cp -r ./script ./appspec.yml ./build/api-spec/openapi3.yaml ./build/libs && cd build/libs && zip -qq -r ../zip/deploy.zip .
+      run: mkdir ./build/zip && cp -r ./script ./appspec.yml ./build/libs && cd build/libs && zip -qq -r ../zip/deploy.zip .
 
     - name: AWS CONFIG
       uses: aws-actions/configure-aws-credentials@v1
@@ -38,7 +38,10 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         # AWS Region, e.g. us-east-2
         aws-region:  ap-northeast-2
-    
+
+    - name: openAPI3.yaml S3 이동
+      run: aws s3 sync ./build/api-spec/openapi3.yaml s3://d-doit-deploy/dev/
+
     - name: S3 Sync
       run: |
           aws s3 sync \
