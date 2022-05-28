@@ -13,3 +13,8 @@ spring:
         ddl-auto: create
   datasource:
     url: jdbc:h2:mem:testdb;
+security:
+  jwt:
+    token:
+      secret: "keyName123141asdafafvadssssqweqwuiasdy89pgadhyuiadgvjnk"
+      expired-time: 1440 #분단위로 기록 토큰 만료일 1하루임
