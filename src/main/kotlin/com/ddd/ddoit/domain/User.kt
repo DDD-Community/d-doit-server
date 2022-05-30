@@ -15,12 +15,19 @@ class User(
 ) : UserDetails
 {
     @Id
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
     var name: String = name
 
     var email: String = email
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    val room: List<Room> = arrayListOf()
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    val attendance: List<Attendance> = arrayListOf()
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority>? {
         return null

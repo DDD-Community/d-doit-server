@@ -3,16 +3,17 @@ spring:
     console:
       enabled: true
   jpa:
+    database-platform: org.hibernate.dialect.MySQL57Dialect
     show-sql: true
     properties:
       hibernate:
-        dialects: org.hibernate.dialect.MySQL57Dialect
         format_sql: true
     generate-ddl: true
     hibernate:
-        ddl-auto: create
+        ddl-auto: 'create'
   datasource:
-    url: jdbc:h2:mem:testdb;
+    url: jdbc:h2:mem:testdb2;MODE=MYSQL
+
 security:
   jwt:
     token:
