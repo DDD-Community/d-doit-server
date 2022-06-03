@@ -7,6 +7,7 @@ import javax.persistence.*
 class AttendanceEvent(
     val startDate: LocalDateTime,
     val certification: String,
+    val duration: Long,
 ) {
 
     @Id
@@ -16,5 +17,8 @@ class AttendanceEvent(
 
     @ManyToOne(fetch = FetchType.LAZY)
     val group: Group? = null
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    val attendance: Attendance? = null
 
 }

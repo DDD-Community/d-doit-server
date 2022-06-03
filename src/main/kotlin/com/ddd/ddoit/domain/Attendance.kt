@@ -18,7 +18,7 @@ class Attendance(
     val user: User? = null
 
     @OneToMany(mappedBy = "attendance", fetch = FetchType.LAZY)
-    val attendanceEvent: List<AttendanceEvent> = arrayListOf()
+    val attendanceEvent: MutableList<AttendanceEvent> = arrayListOf()
 
 
 }
