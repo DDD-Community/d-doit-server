@@ -8,7 +8,6 @@ import com.ddd.ddoit.exception.BaseErrorCodeException
 import com.ddd.ddoit.exception.BaseException
 import com.ddd.ddoit.repository.GroupInfoRepository
 import com.ddd.ddoit.repository.GroupRepository
-import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
@@ -28,15 +27,18 @@ class GroupService(val groupRepository: GroupRepository, val groupInfoRepository
         return groupRepository.findById(id).orElseThrow { throw BaseException(BaseErrorCodeException.INVALID_USER) }
     }
 
-    fun enterGroup(groupId: Long, @AuthenticationPrincipal user: User){
+    fun enterGroup(groupId: Long, user: User){
 
     }
 
-    fun exitGroup(groupId: Long, @AuthenticationPrincipal user: User){
+    fun exitGroup(groupId: Long, user: User){
 
     }
 
-    fun updateGroup(@AuthenticationPrincipal user: User){
-
+    @Transactional
+    fun updateGroup(groupId: Long, req: GroupRequest, user: User){
+        //TODO 계정 역할 확인 필요 ADMIN CHECK
+        //val info = groupInfoRepository.findByGroupIdAndUserId(groupId, user.id!!).orElseThrow{throw BaseException(BaseErrorCodeException.BAD_REQUEST)}
+        val group = groupRepository.findById(groupId).orElseThrow { throw BaseException(BaseErrorCodeException.INVALID_USER) }
     }
 }
