@@ -7,6 +7,7 @@ import com.ddd.ddoit.dto.SocialType
 import com.ddd.ddoit.jwt.JwtAuthenticationEntryPoint
 import com.ddd.ddoit.jwt.JwtTokenProvider
 import com.ddd.ddoit.service.GroupService
+import com.epages.restdocs.apispec.HeaderDescriptorWithType
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper
 import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -22,6 +23,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
+import org.springframework.restdocs.headers.HeaderDescriptor
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
 import org.springframework.restdocs.payload.JsonFieldType
@@ -55,7 +57,7 @@ class GroupControllerTest {
     private val GroupRequestSnippet = PayloadDocumentation.requestFields(
         PayloadDocumentation.fieldWithPath("name").type(JsonFieldType.STRING).description("이메일"),
         PayloadDocumentation.fieldWithPath("description").type(JsonFieldType.STRING).description("회원이름"),
-        PayloadDocumentation.fieldWithPath("notice").type(JsonFieldType.STRING).description("공지사항")
+        PayloadDocumentation.fieldWithPath("notice").type(JsonFieldType.STRING).description("공지사항"),
     )
 
     private val GroupResponseSnippet = PayloadDocumentation.responseFields(
@@ -82,7 +84,7 @@ class GroupControllerTest {
         given(jwtTokenProvider.validateToken(anyString())).willReturn(true)
 
         mockMvc.perform(post("/group")
-            .header(HttpHeaders.AUTHORIZATION, "Bearer 123")
+            .header(HttpHeaders.AUTHORIZATION, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrYWthb18xMjM0Iiwicm9sZXMiOltdLCJpYXQiOjE2NTQyNDI1NDQsImV4cCI6MTY1NDMyODk0NH0.SniH9LmLDVPMNm3a-q9wx14_HCWBf1M08wY2Ie6dTL0")
             .content(body)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isCreated)
@@ -107,7 +109,7 @@ class GroupControllerTest {
         given(groupService.findGroup(anyLong())).willReturn(group)
 
         mockMvc.perform(get("/group/{id}", 1)
-            .header(HttpHeaders.AUTHORIZATION, "Bearer 123")
+            .header(HttpHeaders.AUTHORIZATION, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrYWthb18xMjM0Iiwicm9sZXMiOltdLCJpYXQiOjE2NTQyNDI1NDQsImV4cCI6MTY1NDMyODk0NH0.SniH9LmLDVPMNm3a-q9wx14_HCWBf1M08wY2Ie6dTL0")
             .contentType(MediaType.APPLICATION_JSON)
         )
         .andExpect(status().isOk)
@@ -119,6 +121,7 @@ class GroupControllerTest {
             MockMvcRestDocumentationWrapper.document("그룹 찾기", ResourceSnippetParametersBuilder()
                 .tag("그룹 관련 API") //대분류
                 .description("그룹 찾기")
+                .requestHeaders(HeaderDescriptorWithType("AUTHORIZATION").description("JWT"))
                 , snippets = arrayOf(GroupFindResponseSnippet)
             )
         )
