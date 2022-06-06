@@ -61,4 +61,9 @@ class User(
         groupInfo.add(info)
         info.user = this
     }
+
+    fun removeGroupInfo(info: GroupInfo) {
+        groupInfo.remove(info)
+        info.user = null
+    }
 }

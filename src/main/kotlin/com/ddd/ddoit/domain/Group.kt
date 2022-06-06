@@ -25,12 +25,14 @@ class Group(
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "group")
     val attendanceEvent: MutableList<AttendanceEvent> = mutableListOf()
 
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "group")
-    val roles: MutableList<GroupRoles> = mutableListOf()
-
     fun makeGroup(info: GroupInfo) {
         groupInfo.add(info)
         info.group = this
+    }
+
+    fun deleteInfo(info: GroupInfo) {
+        groupInfo.remove(info)
+        info.group = null
     }
 
 

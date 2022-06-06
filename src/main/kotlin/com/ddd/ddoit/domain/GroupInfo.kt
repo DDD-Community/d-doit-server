@@ -21,4 +21,9 @@ class GroupInfo(
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "groupInfo")
     val groupRole: MutableList<GroupRoles> = arrayListOf()
 
+    fun joinGroup(group: Group?, user: User?){
+        this.group = group
+        this.user = user
+    }
+
 }

@@ -1,25 +1,21 @@
 package com.ddd.ddoit.service
 
 import com.ddd.ddoit.domain.Group
-import com.ddd.ddoit.domain.GroupInfo
 import com.ddd.ddoit.domain.User
 import com.ddd.ddoit.dto.GroupRequest
 import com.ddd.ddoit.exception.BaseErrorCodeException
 import com.ddd.ddoit.exception.BaseException
-import com.ddd.ddoit.repository.GroupInfoRepository
 import com.ddd.ddoit.repository.GroupRepository
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
 @Service
-class GroupService(val groupRepository: GroupRepository, val groupInfoRepository: GroupInfoRepository) {
+class GroupService(val groupRepository: GroupRepository, val groupInfoService: GroupInfoService) {
 
     @Transactional
     fun saveGroup(groupRequest: GroupRequest, user: User): Group {
         val group = groupRepository.save(groupRequest.toEntity())
-        val info = groupInfoRepository.save(GroupInfo(user, group))
-        group.makeGroup(info); //메소드명 수정 필요.
-        user.addGroupInfo(info);
+        groupInfoService.joinGroupInfo(group, user)
         return group
     }
 
@@ -27,11 +23,17 @@ class GroupService(val groupRepository: GroupRepository, val groupInfoRepository
         return groupRepository.findById(id).orElseThrow { throw BaseException(BaseErrorCodeException.INVALID_USER) }
     }
 
-    fun enterGroup(groupId: Long, user: User){
-
+    fun joinGroup(id: Long, user: User){
+        val group = groupRepository.findById(id).orElseThrow { throw BaseException(BaseErrorCodeException.INVALID_USER) }
+        if(groupInfoService.isUserInGroup(user, group)) throw BaseException(BaseErrorCodeException.INVALID_USER) //TODO 그룹내에 이미 유저가 포함된 상황 에러코드 새로 발급
+        else return groupInfoService.joinGroupInfo(group, user)
     }
 
-    fun exitGroup(groupId: Long, user: User){
+
+    fun exitGroup(id: Long, user: User){
+        val group = groupRepository.findById(id).orElseThrow { throw BaseException(BaseErrorCodeException.INVALID_USER) }
+        if(!groupInfoService.isUserInGroup(user, group)) throw BaseException(BaseErrorCodeException.INVALID_USER) //TODO 이번에는 그룹에 유저가 없는데 탈퇴하는 상황이 생길수 없음
+        else return groupInfoService.deleteGroup(group, user)
 
     }
 

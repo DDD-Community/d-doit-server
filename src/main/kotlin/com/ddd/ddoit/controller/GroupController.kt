@@ -1,5 +1,6 @@
 package com.ddd.ddoit.controller
 
+import com.ddd.ddoit.domain.GroupInfo
 import com.ddd.ddoit.domain.User
 import com.ddd.ddoit.dto.GroupRequest
 import com.ddd.ddoit.dto.HttpResponse
@@ -24,6 +25,21 @@ class GroupController(val groupService: GroupService) {
         val group = groupService.findGroup(id)
         return ResponseEntity(HttpResponse(
             200, "그룹 찾기 완료", GroupResponse(group.name, group.description)
+        ), HttpStatus.OK)
+    }
+
+    @GetMapping("/group/{id}/join")
+    fun joinGroup(@PathVariable id: Long, @AuthenticationPrincipal user: User): ResponseEntity<HttpResponse<Unit>> {
+        return ResponseEntity(HttpResponse(
+            200, "그룹 참가 완료", groupService.joinGroup(id, user)
+        ), HttpStatus.OK)
+    }
+
+
+    @GetMapping("/group/{id}/exit")
+    fun exitGroup(@PathVariable id: Long, @AuthenticationPrincipal user: User): ResponseEntity<HttpResponse<Unit>> {
+        return ResponseEntity(HttpResponse(
+            200, "그룹 탈퇴 완료", groupService.exitGroup(id, user)
         ), HttpStatus.OK)
     }
 
