@@ -2,7 +2,9 @@ package com.ddd.ddoit.service
 
 import com.ddd.ddoit.domain.Group
 import com.ddd.ddoit.domain.User
-import com.ddd.ddoit.dto.GroupRequest
+import com.ddd.ddoit.dto.Group.GroupRequest
+import com.ddd.ddoit.dto.Group.GroupListResponse
+import com.ddd.ddoit.dto.GroupRoleType
 import com.ddd.ddoit.exception.BaseErrorCodeException
 import com.ddd.ddoit.exception.BaseException
 import com.ddd.ddoit.repository.GroupRepository
@@ -15,7 +17,7 @@ class GroupService(val groupRepository: GroupRepository, val groupInfoService: G
     @Transactional
     fun saveGroup(groupRequest: GroupRequest, user: User): Group {
         val group = groupRepository.save(groupRequest.toEntity())
-        groupInfoService.joinGroupInfo(group, user)
+        groupInfoService.joinGroupInfo(group, user, GroupRoleType.ADMIN)
         return group
     }
 
@@ -26,7 +28,7 @@ class GroupService(val groupRepository: GroupRepository, val groupInfoService: G
     fun joinGroup(id: Long, user: User){
         val group = groupRepository.findById(id).orElseThrow { throw BaseException(BaseErrorCodeException.INVALID_USER) }
         if(groupInfoService.isUserInGroup(user, group)) throw BaseException(BaseErrorCodeException.INVALID_USER) //TODO 그룹내에 이미 유저가 포함된 상황 에러코드 새로 발급
-        else return groupInfoService.joinGroupInfo(group, user)
+        else return groupInfoService.joinGroupInfo(group, user, GroupRoleType.USER)
     }
 
 
@@ -42,5 +44,10 @@ class GroupService(val groupRepository: GroupRepository, val groupInfoService: G
         //TODO 계정 역할 확인 필요 ADMIN CHECK
         //val info = groupInfoRepository.findByGroupIdAndUserId(groupId, user.id!!).orElseThrow{throw BaseException(BaseErrorCodeException.BAD_REQUEST)}
         val group = groupRepository.findById(groupId).orElseThrow { throw BaseException(BaseErrorCodeException.INVALID_USER) }
+    }
+
+    fun listUserGroup(user: User): List<GroupListResponse?> {
+        val groups = groupInfoService.findGroups(user)
+        return groups.stream().map { info -> GroupListResponse.toEntityList(info.group, info) }.toList()
     }
 }

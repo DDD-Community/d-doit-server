@@ -8,5 +8,6 @@ import java.util.*
 @Repository
 interface GroupInfoRepository: JpaRepository<GroupInfo, Long> {
 
-    fun findByGroupIdAndUserId(groupId: Long, userId: Long): Optional<GroupInfo >
+    fun findByGroupIdAndUserId(groupId: Long, userId: Long): Optional<GroupInfo>
+    fun findAllByUserId(id: Long?): List<GroupInfo>
 }
