@@ -1,7 +1,7 @@
 package com.ddd.ddoit.controller
 
 import com.ddd.ddoit.domain.User
-import com.ddd.ddoit.dto.Group.GroupListResponse
+import com.ddd.ddoit.dto.group.GroupListResponse
 import com.ddd.ddoit.dto.HttpResponse
 import com.ddd.ddoit.service.GroupService
 import org.springframework.http.HttpStatus

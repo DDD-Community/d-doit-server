@@ -1,14 +1,18 @@
 package com.ddd.ddoit.controller
 
-import com.ddd.ddoit.domain.GroupInfo
 import com.ddd.ddoit.domain.User
-import com.ddd.ddoit.dto.GroupRequest
+import com.ddd.ddoit.dto.group.GroupRequest
+import com.ddd.ddoit.dto.group.GroupResponse
 import com.ddd.ddoit.dto.HttpResponse
 import com.ddd.ddoit.service.GroupService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class GroupController(val groupService: GroupService) {
@@ -21,10 +25,10 @@ class GroupController(val groupService: GroupService) {
     }
 
     @GetMapping("/group/{id}")
-    fun findGroup(@PathVariable id: Long): ResponseEntity<HttpResponse<GroupResponse>> {
+    fun findGroup(@PathVariable id: Long): ResponseEntity<HttpResponse<GroupResponse?>> {
         val group = groupService.findGroup(id)
         return ResponseEntity(HttpResponse(
-            200, "그룹 찾기 완료", GroupResponse(group.name, group.description)
+            200, "그룹 찾기 완료", GroupResponse.toEntity(group)
         ), HttpStatus.OK)
     }
 

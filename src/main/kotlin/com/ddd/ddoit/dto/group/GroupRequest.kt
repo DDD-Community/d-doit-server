@@ -1,4 +1,4 @@
-package com.ddd.ddoit.dto
+package com.ddd.ddoit.dto.group
 
 import com.ddd.ddoit.domain.Group
 

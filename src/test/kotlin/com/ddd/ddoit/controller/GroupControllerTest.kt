@@ -2,7 +2,7 @@ package com.ddd.ddoit.controller
 
 import com.ddd.ddoit.domain.Group
 import com.ddd.ddoit.domain.User
-import com.ddd.ddoit.dto.GroupRequest
+import com.ddd.ddoit.dto.group.GroupRequest
 import com.ddd.ddoit.dto.SocialType
 import com.ddd.ddoit.jwt.JwtAuthenticationEntryPoint
 import com.ddd.ddoit.jwt.JwtTokenProvider
@@ -23,7 +23,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
-import org.springframework.restdocs.headers.HeaderDescriptor
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
 import org.springframework.restdocs.payload.JsonFieldType

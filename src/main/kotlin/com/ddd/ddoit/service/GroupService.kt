@@ -2,8 +2,8 @@ package com.ddd.ddoit.service
 
 import com.ddd.ddoit.domain.Group
 import com.ddd.ddoit.domain.User
-import com.ddd.ddoit.dto.Group.GroupRequest
-import com.ddd.ddoit.dto.Group.GroupListResponse
+import com.ddd.ddoit.dto.group.GroupRequest
+import com.ddd.ddoit.dto.group.GroupListResponse
 import com.ddd.ddoit.dto.GroupRoleType
 import com.ddd.ddoit.exception.BaseErrorCodeException
 import com.ddd.ddoit.exception.BaseException
