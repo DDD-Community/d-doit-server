@@ -48,6 +48,6 @@ class GroupService(val groupRepository: GroupRepository, val groupInfoService: G
 
     fun listUserGroup(user: User): List<GroupListResponse?> {
         val groups = groupInfoService.findGroups(user)
-        return groups.stream().map { info -> GroupListResponse.toEntityList(info.group, info) }.toList()
+        return groups.map { info -> GroupListResponse.toEntityList(info.group, info) }.toList()
     }
 }
