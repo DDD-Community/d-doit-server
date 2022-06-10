@@ -22,19 +22,19 @@ class GroupService(val groupRepository: GroupRepository, val groupInfoService: G
     }
 
     fun findGroup(id: Long): Group {
-        return groupRepository.findById(id).orElseThrow { throw BaseException(BaseErrorCodeException.INVALID_USER) }
+        return groupRepository.findById(id).orElseThrow { throw BaseException(BaseErrorCodeException.GROUP_NOT_FOUND) }
     }
 
     fun joinGroup(id: Long, user: User){
-        val group = groupRepository.findById(id).orElseThrow { throw BaseException(BaseErrorCodeException.INVALID_USER) }
-        if(groupInfoService.isUserInGroup(user, group)) throw BaseException(BaseErrorCodeException.INVALID_USER) //TODO 그룹내에 이미 유저가 포함된 상황 에러코드 새로 발급
+        val group = groupRepository.findById(id).orElseThrow { throw BaseException(BaseErrorCodeException.GROUP_NOT_FOUND) }
+        if(groupInfoService.isUserInGroup(user, group)) throw BaseException(BaseErrorCodeException.USER_IN_GROUP)
         else return groupInfoService.joinGroupInfo(group, user, GroupRoleType.USER)
     }
 
 
     fun exitGroup(id: Long, user: User){
-        val group = groupRepository.findById(id).orElseThrow { throw BaseException(BaseErrorCodeException.INVALID_USER) }
-        if(!groupInfoService.isUserInGroup(user, group)) throw BaseException(BaseErrorCodeException.INVALID_USER) //TODO 이번에는 그룹에 유저가 없는데 탈퇴하는 상황이 생길수 없음
+        val group = groupRepository.findById(id).orElseThrow { throw BaseException(BaseErrorCodeException.GROUP_NOT_FOUND) }
+        if(!groupInfoService.isUserInGroup(user, group)) throw BaseException(BaseErrorCodeException.GROUP_IN_NOT_USER)
         else return groupInfoService.deleteGroup(group, user)
 
     }
@@ -43,7 +43,7 @@ class GroupService(val groupRepository: GroupRepository, val groupInfoService: G
     fun updateGroup(groupId: Long, req: GroupRequest, user: User){
         //TODO 계정 역할 확인 필요 ADMIN CHECK
         //val info = groupInfoRepository.findByGroupIdAndUserId(groupId, user.id!!).orElseThrow{throw BaseException(BaseErrorCodeException.BAD_REQUEST)}
-        val group = groupRepository.findById(groupId).orElseThrow { throw BaseException(BaseErrorCodeException.INVALID_USER) }
+        val group = groupRepository.findById(groupId).orElseThrow { throw BaseException(BaseErrorCodeException.GROUP_NOT_FOUND) }
     }
 
     fun listUserGroup(user: User): List<GroupListResponse?> {
