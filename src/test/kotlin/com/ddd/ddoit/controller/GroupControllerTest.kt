@@ -69,6 +69,7 @@ class GroupControllerTest {
         PayloadDocumentation.fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드 번호"),
         PayloadDocumentation.fieldWithPath("msg").type(JsonFieldType.STRING).description("응답 메세지"),
         PayloadDocumentation.fieldWithPath("body").type(JsonFieldType.OBJECT).description("찾은 그룹 객체"),
+        PayloadDocumentation.fieldWithPath("body.id").type(JsonFieldType.NUMBER).description("찾은 그룹 ID"),
         PayloadDocumentation.fieldWithPath("body.name").type(JsonFieldType.STRING).description("찾은 그룹명"),
         PayloadDocumentation.fieldWithPath("body.description").type(JsonFieldType.STRING).description("찾은 그룹 설명"),
     )
@@ -104,7 +105,7 @@ class GroupControllerTest {
     @DisplayName("그룹 찾기")
     @WithMockCustomUser("이름")
     fun findGroup() {
-
+        group.id = 1L
         given(groupService.findGroup(anyLong())).willReturn(group)
 
         mockMvc.perform(get("/group/{id}", 1)
@@ -120,7 +121,6 @@ class GroupControllerTest {
             MockMvcRestDocumentationWrapper.document("그룹 찾기", ResourceSnippetParametersBuilder()
                 .tag("그룹 관련 API") //대분류
                 .description("그룹 찾기")
-                .requestHeaders(HeaderDescriptorWithType("AUTHORIZATION").description("JWT"))
                 , snippets = arrayOf(GroupFindResponseSnippet)
             )
         )
