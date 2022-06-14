@@ -7,6 +7,7 @@ import javax.persistence.*
 @Entity
 class Attendance(
     val status: String,
+    val time: LocalDateTime = LocalDateTime.now()
 ) {
     @Id
     @Column(name = "attendance_id")
@@ -17,8 +18,7 @@ class Attendance(
     @JoinColumn(name = "user_id")
     val user: User? = null
 
-    @OneToMany(mappedBy = "attendance", fetch = FetchType.LAZY)
-    val attendanceEvent: MutableList<AttendanceEvent> = arrayListOf()
-
+    @JoinColumn(table = "attendance_event", referencedColumnName = "id")
+    val attendanceEventId: Long? = null
 
 }
