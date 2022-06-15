@@ -15,8 +15,10 @@ enum class BaseErrorCodeException (val status: HttpStatus, val message: String, 
 
     //Group 관련한 에러코드 750 ~
     GROUP_NOT_FOUND(HttpStatus.BAD_REQUEST, "그룹을 찾을 수 없습니다.", 750),
-    GROUP_IN_NOT_USER(HttpStatus.BAD_REQUEST, "그룹에 유저가 포함되지 않았습니다.", 751)
+    GROUP_IN_NOT_USER(HttpStatus.BAD_REQUEST, "그룹에 유저가 포함되지 않았습니다.", 751),
 
-
+    //출석 관련한 에러코드 600
+    NOT_ADMIN(HttpStatus.BAD_REQUEST, "출석 시작은 그룹장만 가능합니다.", 600),
+    NOT_CURRENT_ATTENDANCE(HttpStatus.BAD_REQUEST, "현재 열려있는 출석이 없습니다.", 601),
 
 }

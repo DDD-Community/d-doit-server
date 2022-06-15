@@ -35,5 +35,10 @@ class Group(
         info.group = null
     }
 
+    fun makeAttendanceEvent(event: AttendanceEvent) {
+        event.group = this
+        attendanceEvent.add(event)
+    }
+
 
 }

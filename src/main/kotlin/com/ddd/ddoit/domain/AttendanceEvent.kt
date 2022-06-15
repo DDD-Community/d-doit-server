@@ -16,6 +16,10 @@ class AttendanceEvent(
     val id: Long? = null
 
     @ManyToOne(fetch = FetchType.LAZY)
-    val group: Group? = null
+    var group: Group? = null
 
+    fun addGroup(group: Group) {
+        this.group = group
+        group.attendanceEvent.add(this)
+    }
 }

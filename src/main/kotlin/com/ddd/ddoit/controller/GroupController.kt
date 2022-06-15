@@ -54,15 +54,16 @@ class GroupController(val groupService: GroupService, val attendanceService: Att
 
     @PostMapping("/group/{id}/attendance") //그룹 내 출석 이벤트 시작
     fun startAttendanceEvent(@PathVariable id: Long, @AuthenticationPrincipal user:User, @RequestBody request: AttendanceRequest): ResponseEntity<HttpResponse<AttendanceResponse>>{
+        val group = groupService.findGroup(id)
         return ResponseEntity(HttpResponse(
-            200, "그룹 출석 시작", AttendanceResponse.toEntity(attendanceService.triggerEvent(request, user, id))
+            200, "그룹 출석 시작", AttendanceResponse.toEntity(attendanceService.triggerEvent(request, user, group))
         ), HttpStatus.OK)
     }
 
     @GetMapping("/group/{id}/attendance") //그룹내 출석 이벤트 처리하는지?
-    fun findAttendanceEvent(@PathVariable id: Long, @AuthenticationPrincipal user:User): ResponseEntity<HttpResponse<AttendanceEvent>>{
+    fun findAttendanceEvent(@PathVariable id: Long, @AuthenticationPrincipal user:User): ResponseEntity<HttpResponse<AttendanceResponse>>{
         return ResponseEntity(HttpResponse(
-            200, "그룹 출석 이벤트 출력", attendanceService.findCurrentEvent(id)
+            200, "그룹 출석 이벤트 출력", AttendanceResponse.toEntity(attendanceService.findCurrentEvent(id))
         ), HttpStatus.OK)
     }
 
