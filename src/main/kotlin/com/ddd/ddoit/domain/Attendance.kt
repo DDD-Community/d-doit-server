@@ -16,9 +16,15 @@ class Attendance(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    val user: User? = null
+    var user: User? = null
 
     @JoinColumn(table = "attendance_event", referencedColumnName = "id")
-    val attendanceEventId: Long? = null
+    var attendanceEventId: Long? = null
+
+    fun addUserAndEvent(user: User, eventId: Long) {
+        attendanceEventId = eventId
+        this.user = user
+        user.attendance.add(this)
+    }
 
 }

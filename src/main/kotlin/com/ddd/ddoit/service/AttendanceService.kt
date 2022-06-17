@@ -1,5 +1,6 @@
 package com.ddd.ddoit.service
 
+import com.ddd.ddoit.domain.Attendance
 import com.ddd.ddoit.domain.AttendanceEvent
 import com.ddd.ddoit.domain.Group
 import com.ddd.ddoit.domain.User
@@ -9,7 +10,6 @@ import com.ddd.ddoit.exception.BaseErrorCodeException
 import com.ddd.ddoit.exception.BaseException
 import com.ddd.ddoit.repository.AttendanceEventRepository
 import com.ddd.ddoit.repository.AttendanceRepository
-import com.fasterxml.jackson.databind.ser.Serializers.Base
 import org.springframework.stereotype.Service
 import java.security.SecureRandom
 import java.time.LocalDateTime
@@ -46,4 +46,23 @@ class AttendanceService(val attendanceEventRepository: AttendanceEventRepository
         return attendanceEventRepository.findByGroupIdAndEndDateTimeAfter(groupId, LocalDateTime.now())
             .orElseThrow { throw BaseException(BaseErrorCodeException.NOT_CURRENT_ATTENDANCE) }
     }
+
+    @Transactional
+    fun registerAttendance(id: Long, user: User, request : AttendanceRegisterResquest): Attendance {
+        val event = attendanceEventRepository.findById(id)
+            .orElseThrow { throw BaseException(BaseErrorCodeException.NOT_ATTENDANCE_EVENT) }
+
+        if(event.certification != request.certification)
+            throw  BaseException(BaseErrorCodeException.NOT_CERTIFICATION)
+
+        val attendace = attendanceRepository.save(Attendance("CHECK", LocalDateTime.now()))
+        attendace.addUserAndEvent(user,id)
+        user.addAttendance(attendace)
+        return  attendace
+
+    }
+
+    data class AttendanceRegisterResquest(
+        val certification: String,
+    )
 }

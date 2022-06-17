@@ -20,5 +20,7 @@ enum class BaseErrorCodeException (val status: HttpStatus, val message: String, 
     //출석 관련한 에러코드 600
     NOT_ADMIN(HttpStatus.BAD_REQUEST, "출석 시작은 그룹장만 가능합니다.", 600),
     NOT_CURRENT_ATTENDANCE(HttpStatus.BAD_REQUEST, "현재 열려있는 출석이 없습니다.", 601),
+    NOT_ATTENDANCE_EVENT(HttpStatus.BAD_REQUEST, "종료됬거나, 없는 출석입니다.", 602),
+    NOT_CERTIFICATION(HttpStatus.BAD_REQUEST, "응답 번호가 일치하지 않습니다.", 603),
 
 }

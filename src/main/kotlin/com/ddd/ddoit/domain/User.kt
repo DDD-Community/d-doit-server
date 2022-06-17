@@ -24,10 +24,10 @@ class User(
     var email: String = email
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    val groupInfo: MutableList<GroupInfo> = arrayListOf()
+    var groupInfo: MutableList<GroupInfo> = arrayListOf()
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    val attendance: MutableList<Attendance> = arrayListOf()
+    var attendance: MutableList<Attendance> = arrayListOf()
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority>? {
         return null
@@ -65,5 +65,10 @@ class User(
     fun removeGroupInfo(info: GroupInfo) {
         groupInfo.remove(info)
         info.user = null
+    }
+
+    fun addAttendance(attendance: Attendance){
+        attendance.user = this
+        this.attendance.add(attendance)
     }
 }
