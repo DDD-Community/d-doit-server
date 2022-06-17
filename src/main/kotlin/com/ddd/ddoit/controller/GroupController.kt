@@ -1,12 +1,12 @@
 package com.ddd.ddoit.controller
 
-import com.ddd.ddoit.domain.AttendanceEvent
 import com.ddd.ddoit.domain.User
-import com.ddd.ddoit.dto.group.GroupRequest
-import com.ddd.ddoit.dto.group.GroupResponse
 import com.ddd.ddoit.dto.HttpResponse
 import com.ddd.ddoit.dto.attendance.AttendanceRequest
 import com.ddd.ddoit.dto.attendance.AttendanceResponse
+import com.ddd.ddoit.dto.group.GroupRequest
+import com.ddd.ddoit.dto.group.GroupResponse
+import com.ddd.ddoit.dto.group.GroupUpdateRequest
 import com.ddd.ddoit.service.AttendanceService
 import com.ddd.ddoit.service.GroupService
 import org.springframework.http.HttpStatus
@@ -15,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
@@ -74,11 +75,19 @@ class GroupController(val groupService: GroupService, val attendanceService: Att
         ), HttpStatus.OK)
     }
 
-    /*@PutMapping("/group/{id}")
-    fun updateGroupInfo(@PathVariable id: Long, @RequestBody groupRequest: GroupRequest, @AuthenticationPrincipal user: User): ResponseEntity
-    <HttpResponse<T>>{
+    @PutMapping("/group/{id}/notice")
+    fun updateGroupNotice(@PathVariable id: Long, @AuthenticationPrincipal user: User,
+                        @RequestBody groupRequest: GroupUpdateRequest): ResponseEntity<HttpResponse<Unit>> {
         return ResponseEntity(HttpResponse(
-            201, "그룹 생성 완료", groupService.updateGroup(groupRequest, user)
-        ) ,HttpStatus.CREATED)
-    }*/
+            200, "그룹 공지 수정 완료", groupService.updateGroupNotice(id, groupRequest, user)
+        ) ,HttpStatus.OK)
+    }
+
+    @PutMapping("/group/{id}/description")
+    fun updateGroupDescription(@PathVariable id: Long, @AuthenticationPrincipal user: User,
+                        @RequestBody groupRequest: GroupUpdateRequest): ResponseEntity<HttpResponse<Unit>> {
+        return ResponseEntity(HttpResponse(
+            200, "그룹 설명 수정 완료", groupService.updateGroupDescription(id, groupRequest, user)
+        ) ,HttpStatus.OK)
+    }
 }

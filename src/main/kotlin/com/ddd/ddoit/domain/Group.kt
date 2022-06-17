@@ -9,9 +9,9 @@ import javax.persistence.*
 @Table(name = "Groups")
 class Group(
     val name: String,
-    val description: String,
-    val notice: String,
-    val size: Long,
+    var description: String,
+    var notice: String,
+    var size: Long,
 )
 {
     @Id
@@ -38,6 +38,14 @@ class Group(
     fun makeAttendanceEvent(event: AttendanceEvent) {
         event.group = this
         attendanceEvent.add(event)
+    }
+
+    fun updateNotice(notice: String){
+        this.notice = notice
+    }
+
+    fun updateDescription(description: String){
+        this.description = description
     }
 
 

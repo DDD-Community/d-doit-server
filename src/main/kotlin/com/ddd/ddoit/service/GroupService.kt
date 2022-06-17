@@ -5,6 +5,7 @@ import com.ddd.ddoit.domain.User
 import com.ddd.ddoit.dto.group.GroupRequest
 import com.ddd.ddoit.dto.group.GroupListResponse
 import com.ddd.ddoit.dto.GroupRoleType
+import com.ddd.ddoit.dto.group.GroupUpdateRequest
 import com.ddd.ddoit.exception.BaseErrorCodeException
 import com.ddd.ddoit.exception.BaseException
 import com.ddd.ddoit.repository.GroupRepository
@@ -40,10 +41,23 @@ class GroupService(val groupRepository: GroupRepository, val groupInfoService: G
     }
 
     @Transactional
-    fun updateGroup(groupId: Long, req: GroupRequest, user: User){
-        //TODO 계정 역할 확인 필요 ADMIN CHECK
-        //val info = groupInfoRepository.findByGroupIdAndUserId(groupId, user.id!!).orElseThrow{throw BaseException(BaseErrorCodeException.BAD_REQUEST)}
-        val group = groupRepository.findById(groupId).orElseThrow { throw BaseException(BaseErrorCodeException.GROUP_NOT_FOUND) }
+    fun updateGroupNotice(groupId: Long, req: GroupUpdateRequest, user: User){
+        val group = groupRepository.findById(groupId)
+            .orElseThrow { throw BaseException(BaseErrorCodeException.GROUP_NOT_FOUND) }
+        val info = group.groupInfo.first { it.user == user }
+        if ( GroupRoleType.valueIdOf(info.groupRolesId!!)!= GroupRoleType.ADMIN)
+            throw BaseException(BaseErrorCodeException.NOT_ADMIN)
+        req.notice?.let { group.updateNotice(it) }
+    }
+
+    @Transactional
+    fun updateGroupDescription(groupId: Long, req: GroupUpdateRequest, user: User){
+        val group = groupRepository.findById(groupId)
+            .orElseThrow { throw BaseException(BaseErrorCodeException.GROUP_NOT_FOUND) }
+        val info = group.groupInfo.first { it.user == user }
+        if ( GroupRoleType.valueIdOf(info.groupRolesId!!)!= GroupRoleType.ADMIN)
+            throw BaseException(BaseErrorCodeException.NOT_ADMIN)
+        req.description?.let { group.updateDescription(it) }
     }
 
     fun listUserGroup(user: User): List<GroupListResponse?> {
