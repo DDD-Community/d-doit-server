@@ -136,7 +136,7 @@ class AuthControllerTest {
             .andExpect(status().isBadRequest)
             .andExpect(jsonPath("$.name").value("INVALID_USER"))
             .andExpect(jsonPath("$.code").value("900"))
-            .andExpect(jsonPath("$.msg").value("유저 혹은 비밀번호가 일치하지 않습니다. 다시 입력해주세요."))
+            .andExpect(jsonPath("$.msg").value("존재하지 않는 유저입니다."))
             .andDo(MockMvcRestDocumentationWrapper.document("로그인 실패", ResourceSnippetParametersBuilder()
                 .tag("유저 관련 API")
                 .description("로그인")

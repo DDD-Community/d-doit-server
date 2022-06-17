@@ -6,6 +6,7 @@ import com.ddd.ddoit.dto.group.GroupRequest
 import com.ddd.ddoit.dto.SocialType
 import com.ddd.ddoit.jwt.JwtAuthenticationEntryPoint
 import com.ddd.ddoit.jwt.JwtTokenProvider
+import com.ddd.ddoit.service.AttendanceService
 import com.ddd.ddoit.service.GroupService
 import com.epages.restdocs.apispec.HeaderDescriptorWithType
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper
@@ -41,6 +42,9 @@ class GroupControllerTest {
 
     @MockBean
     lateinit var groupService: GroupService
+
+    @MockBean
+    lateinit var attendanceService: AttendanceService
 
     @MockBean
     lateinit var jwtTokenProvider: JwtTokenProvider
