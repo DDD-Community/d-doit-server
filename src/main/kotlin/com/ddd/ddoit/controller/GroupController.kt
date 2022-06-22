@@ -1,6 +1,7 @@
 package com.ddd.ddoit.controller
 
 import com.ddd.ddoit.domain.User
+import com.ddd.ddoit.dto.GroupDetailResponse
 import com.ddd.ddoit.dto.HttpResponse
 import com.ddd.ddoit.dto.attendance.AttendanceRequest
 import com.ddd.ddoit.dto.attendance.AttendanceResponse
@@ -34,6 +35,14 @@ class GroupController(val groupService: GroupService, val attendanceService: Att
         val group = groupService.findGroup(id)
         return ResponseEntity(HttpResponse(
             200, "그룹 찾기 완료", GroupResponse.toEntity(group)
+        ), HttpStatus.OK)
+    }
+
+    @GetMapping("/group/{id}/detail")
+    fun findGroupDetail(@PathVariable id:Long, @AuthenticationPrincipal user: User):
+            ResponseEntity<HttpResponse<GroupDetailResponse?>>{
+        return ResponseEntity(HttpResponse(
+            200, "그룹 정보 노출 완료", groupService.findGroupDetail(id, user)
         ), HttpStatus.OK)
     }
 
