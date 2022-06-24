@@ -20,7 +20,7 @@ class AttendanceController(val attendanceService: AttendanceService) {
      */
     @PostMapping("/attendance/{id}")
     fun registerUserAttendance(@PathVariable id:Long, @AuthenticationPrincipal user: User,
-                            @RequestBody request: AttendanceService.AttendanceRegisterResquest)
+                            @RequestBody request: AttendanceService.AttendanceRegisterRequest)
     : ResponseEntity<HttpResponse<AttendanceRegResponse>> {
         return ResponseEntity(HttpResponse(
             200, "출석 체크 완료", AttendanceRegResponse.toDto(attendanceService.registerAttendance(id, user, request))

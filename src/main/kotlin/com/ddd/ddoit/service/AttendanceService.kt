@@ -17,7 +17,9 @@ import javax.transaction.Transactional
 
 @Service
 class AttendanceService(val attendanceEventRepository: AttendanceEventRepository,
-                        val attendanceRepository: AttendanceRepository)
+                        val attendanceRepository: AttendanceRepository,
+                        val groupService: GroupService,
+                        )
 {
 
     @Transactional
@@ -47,8 +49,12 @@ class AttendanceService(val attendanceEventRepository: AttendanceEventRepository
             .orElseThrow { throw BaseException(BaseErrorCodeException.NOT_CURRENT_ATTENDANCE) }
     }
 
+    data class AttendanceRegisterRequest(
+        val certification: String,
+    )
+
     @Transactional
-    fun registerAttendance(id: Long, user: User, request : AttendanceRegisterResquest): Attendance {
+    fun registerAttendance(id: Long, user: User, request : AttendanceRegisterRequest): Attendance {
         val event = attendanceEventRepository.findById(id)
             .orElseThrow { throw BaseException(BaseErrorCodeException.NOT_ATTENDANCE_EVENT) }
 
@@ -62,7 +68,19 @@ class AttendanceService(val attendanceEventRepository: AttendanceEventRepository
 
     }
 
-    data class AttendanceRegisterResquest(
-        val certification: String,
-    )
+    //쿼리 자체는 괜찮은데... 방식이 비효율적, 전체 출석 다 가져올 필요가 없음
+    fun findUserAttendanceInGroup(user: User, id: Long): MutableMap<String, Int> {
+        val group = groupService.findGroup(id)
+        //그룹이 가지고있는 모든 출석 이벤트 다가져오기.
+        val list = group.attendanceEvent.map { event -> event.id }.toList()
+        //유저가 가지고 있는 출석 이벤트랑, 그에 맞는 status 계산하기
+        val map = mutableMapOf(Pair("출석", 0), Pair("결석", list.size))
+        user.attendance.filter { list.contains(it.attendanceEventId) }.forEach {
+            if(it.status=="CHECK"){
+                map["출석"] = map["출석"]?.plus(1) ?: 0
+                map["결석"] = map["결석"]?.minus(1) ?: 0
+            }
+        }
+        return map
+    }
 }

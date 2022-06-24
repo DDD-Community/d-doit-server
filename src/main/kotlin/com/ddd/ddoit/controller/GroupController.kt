@@ -101,10 +101,10 @@ class GroupController(val groupService: GroupService, val attendanceService: Att
     /**
      * 그룹내의 유저의 출석 현황 체크
      */
-    @GetMapping("/group/{id}/attendances")
-    fun listAttendanceEvent(@PathVariable id: Long, @AuthenticationPrincipal user:User): ResponseEntity<HttpResponse<Unit>>{
+    @GetMapping("/group/{id}/user/attendances")
+    fun listAttendanceEvent(@PathVariable id: Long, @AuthenticationPrincipal user:User): ResponseEntity<HttpResponse<MutableMap<String, Int>>>{
         return ResponseEntity(HttpResponse(
-            200, "그룹 출석 이벤트 출력", Unit
+            200, "그룹 내 현 유저 출석 현황", attendanceService.findUserAttendanceInGroup(user, id)
         ), HttpStatus.OK)
     }
 
