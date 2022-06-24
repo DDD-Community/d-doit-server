@@ -24,4 +24,8 @@ class UserService(var userRepository: UserRepository) : UserDetailsService {
     fun login(req: AuthRequest): User {
         return userRepository.findBySocialIdAndSocial(req.socialId, SocialType.KAKAO)?: throw BaseException(BaseErrorCodeException.INVALID_USER)
     }
+
+    fun isDuplicateUsername(name: String): Boolean{
+        return userRepository.findByName(name).isPresent
+    }
 }
