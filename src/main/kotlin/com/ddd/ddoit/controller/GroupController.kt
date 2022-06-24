@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class GroupController(val groupService: GroupService, val attendanceService: AttendanceService) {
 
+    /**
+     * 그룹 생성
+     */
     @PostMapping("/group")
     fun saveGroup(@RequestBody groupRequest: GroupRequest, @AuthenticationPrincipal user: User): ResponseEntity<HttpResponse<Long>>{
         return ResponseEntity(HttpResponse(
@@ -30,6 +33,9 @@ class GroupController(val groupService: GroupService, val attendanceService: Att
         ) ,HttpStatus.CREATED)
     }
 
+    /**
+     * 그룹 찾기.
+     */
     @GetMapping("/group/{id}")
     fun findGroup(@PathVariable id: Long): ResponseEntity<HttpResponse<GroupResponse?>> {
         val group = groupService.findGroup(id)
@@ -38,6 +44,9 @@ class GroupController(val groupService: GroupService, val attendanceService: Att
         ), HttpStatus.OK)
     }
 
+    /**
+     * 그룹 정보 노출
+     */
     @GetMapping("/group/{id}/detail")
     fun findGroupDetail(@PathVariable id:Long, @AuthenticationPrincipal user: User):
             ResponseEntity<HttpResponse<GroupDetailResponse?>>{
@@ -46,6 +55,9 @@ class GroupController(val groupService: GroupService, val attendanceService: Att
         ), HttpStatus.OK)
     }
 
+    /**
+     * 방 참가
+     */
     @GetMapping("/group/{id}/join")
     fun joinGroup(@PathVariable id: Long, @AuthenticationPrincipal user: User): ResponseEntity<HttpResponse<Unit>> {
         return ResponseEntity(HttpResponse(
@@ -54,6 +66,9 @@ class GroupController(val groupService: GroupService, val attendanceService: Att
     }
 
 
+    /**
+     * 방 탈퇴
+     */
     @GetMapping("/group/{id}/exit")
     fun exitGroup(@PathVariable id: Long, @AuthenticationPrincipal user: User): ResponseEntity<HttpResponse<Unit>> {
         return ResponseEntity(HttpResponse(
@@ -62,7 +77,10 @@ class GroupController(val groupService: GroupService, val attendanceService: Att
     }
 
 
-    @PostMapping("/group/{id}/attendance") //그룹 내 출석 이벤트 시작
+    /**
+     * 그룹 내 출석 이벤트 시작
+     */
+    @PostMapping("/group/{id}/attendance")
     fun startAttendanceEvent(@PathVariable id: Long, @AuthenticationPrincipal user:User, @RequestBody request: AttendanceRequest): ResponseEntity<HttpResponse<AttendanceResponse>>{
         val group = groupService.findGroup(id)
         return ResponseEntity(HttpResponse(
@@ -70,20 +88,29 @@ class GroupController(val groupService: GroupService, val attendanceService: Att
         ), HttpStatus.OK)
     }
 
-    @GetMapping("/group/{id}/attendance") //그룹내 출석 이벤트 처리하는지?
+    /**
+     * 그룹 내 출석 이벤트 진행중인지 확인
+     */
+    @GetMapping("/group/{id}/attendance")
     fun findAttendanceEvent(@PathVariable id: Long, @AuthenticationPrincipal user:User): ResponseEntity<HttpResponse<AttendanceResponse>>{
         return ResponseEntity(HttpResponse(
             200, "그룹 출석 이벤트 출력", AttendanceResponse.toEntity(attendanceService.findCurrentEvent(id))
         ), HttpStatus.OK)
     }
 
-    @GetMapping("/group/{id}/attendances") //그룹내의 출석현황 노출
+    /**
+     * 그룹내의 유저의 출석 현황 체크
+     */
+    @GetMapping("/group/{id}/attendances")
     fun listAttendanceEvent(@PathVariable id: Long, @AuthenticationPrincipal user:User): ResponseEntity<HttpResponse<Unit>>{
         return ResponseEntity(HttpResponse(
             200, "그룹 출석 이벤트 출력", Unit
         ), HttpStatus.OK)
     }
 
+    /**
+     * 그룹 공지 수정
+     */
     @PutMapping("/group/{id}/notice")
     fun updateGroupNotice(@PathVariable id: Long, @AuthenticationPrincipal user: User,
                         @RequestBody groupRequest: GroupUpdateRequest): ResponseEntity<HttpResponse<Unit>> {
@@ -92,6 +119,9 @@ class GroupController(val groupService: GroupService, val attendanceService: Att
         ) ,HttpStatus.OK)
     }
 
+    /**
+     * 그룹 설명 수정
+     */
     @PutMapping("/group/{id}/description")
     fun updateGroupDescription(@PathVariable id: Long, @AuthenticationPrincipal user: User,
                         @RequestBody groupRequest: GroupUpdateRequest): ResponseEntity<HttpResponse<Unit>> {

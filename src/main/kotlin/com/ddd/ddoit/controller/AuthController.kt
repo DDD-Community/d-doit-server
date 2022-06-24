@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class AuthController(val userService: UserService, val jwtTokenProvider: JwtTokenProvider) {
 
+    /**
+     * 회원가입
+     */
     @PostMapping("/signup")
     fun signUp(@RequestBody req: AuthRequest): ResponseEntity<HttpResponse<Long?>> {
         return ResponseEntity(HttpResponse(
@@ -22,6 +25,9 @@ class AuthController(val userService: UserService, val jwtTokenProvider: JwtToke
             HttpStatus.OK)
     }
 
+    /**
+     * 로그인
+     */
     @PostMapping("/login")
     fun login(@RequestBody req: AuthRequest): ResponseEntity<HttpResponse<String>>{
         return ResponseEntity(HttpResponse(
@@ -29,6 +35,9 @@ class AuthController(val userService: UserService, val jwtTokenProvider: JwtToke
         ), HttpStatus.OK)
     }
 
+    /**
+     * 테스트용
+     */
     @GetMapping("/test")
     fun test(): String{
         return "test"

@@ -1,4 +1,4 @@
-package com.ddd.ddoit.controller
+package com.ddd.ddoit.dto.attendance
 
 import com.ddd.ddoit.domain.Attendance
 import java.time.LocalDateTime

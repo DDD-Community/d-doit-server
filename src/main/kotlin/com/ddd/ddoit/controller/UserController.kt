@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class UserController(val groupService: GroupService) {
 
+    /**
+     * 유저가 가지고 있는 방들 노출
+     */
     @GetMapping("/user/groups")
     fun findMyGroups(@AuthenticationPrincipal user: User): ResponseEntity<HttpResponse<List<GroupListResponse?>>>{
         return ResponseEntity(HttpResponse(
