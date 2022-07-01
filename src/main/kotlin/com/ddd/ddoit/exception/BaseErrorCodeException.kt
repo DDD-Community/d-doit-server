@@ -22,5 +22,7 @@ enum class BaseErrorCodeException (val status: HttpStatus, val message: String, 
     NOT_CURRENT_ATTENDANCE(HttpStatus.BAD_REQUEST, "현재 진행 중인 출석이 없어요!", 601),
     NOT_ATTENDANCE_EVENT(HttpStatus.BAD_REQUEST, "이미 종료된 혹은 참여할 수 없는 출석이에요!", 602),
     NOT_CERTIFICATION(HttpStatus.BAD_REQUEST, "틀린 코드에요! 다시 입력하세요!", 603),
+    TOO_LATE_ATTENDANCE(HttpStatus.BAD_REQUEST, "현재 시각보다 늦은 시각의 출석을 등록할 수 없어요!", 604),
+    END_ATTENDANCE(HttpStatus.BAD_REQUEST, "이미 종료된 출석입니다.", 604),
 
 }

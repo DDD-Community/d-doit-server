@@ -5,6 +5,7 @@ import com.ddd.ddoit.dto.GroupDetailResponse
 import com.ddd.ddoit.dto.HttpResponse
 import com.ddd.ddoit.dto.attendance.AttendanceRequest
 import com.ddd.ddoit.dto.attendance.AttendanceResponse
+import com.ddd.ddoit.dto.attendance.GroupInUserAttendanceCountResponse
 import com.ddd.ddoit.dto.group.GroupRequest
 import com.ddd.ddoit.dto.group.GroupResponse
 import com.ddd.ddoit.dto.group.GroupUpdateRequest
@@ -102,7 +103,7 @@ class GroupController(val groupService: GroupService, val attendanceService: Att
      * 그룹내의 유저의 출석 현황 체크
      */
     @GetMapping("/group/{id}/user/attendances")
-    fun listAttendanceEvent(@PathVariable id: Long, @AuthenticationPrincipal user:User): ResponseEntity<HttpResponse<MutableMap<String, Int>>>{
+    fun listAttendanceEvent(@PathVariable id: Long, @AuthenticationPrincipal user:User): ResponseEntity<HttpResponse<GroupInUserAttendanceCountResponse>>{
         return ResponseEntity(HttpResponse(
             200, "그룹 내 현 유저 출석 현황", attendanceService.findUserAttendanceInGroup(user, id)
         ), HttpStatus.OK)
