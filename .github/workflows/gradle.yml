@@ -39,6 +39,17 @@ jobs:
         # AWS Region, e.g. us-east-2
         aws-region:  ap-northeast-2
 
+    - name: Branch-based environment variables that rock
+      uses: iamtheyammer/branch-env-vars@v1.1.3
+      with:
+        FILE_DIR: |
+          master:prod
+          dev:dev
+
+    - name: echo variables
+      run: echo ${{FILE_DIR}}
+
+
     - name: openAPI3.yaml S3 이동
       run: aws s3 sync ./build/api-spec/ s3://d-doit-deploy/dev/
 
