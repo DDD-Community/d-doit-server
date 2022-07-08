@@ -17,10 +17,11 @@ import java.time.LocalDateTime
 import javax.transaction.Transactional
 
 @Service
-class AttendanceService(val attendanceEventRepository: AttendanceEventRepository,
-                        val attendanceRepository: AttendanceRepository,
-                        val groupService: GroupService,
-                        )
+class AttendanceService(
+    val attendanceEventRepository: AttendanceEventRepository,
+    val attendanceRepository: AttendanceRepository,
+    val groupService: GroupService,
+)
 {
 
     @Transactional
@@ -50,9 +51,8 @@ class AttendanceService(val attendanceEventRepository: AttendanceEventRepository
         return attendanceEvent
     }
 
-    fun findCurrentEvent(groupId: Long): AttendanceEvent{
+    fun findCurrentEvent(groupId: Long): AttendanceEvent?{
         return attendanceEventRepository.findByGroupIdAndEndDateTimeAfter(groupId, LocalDateTime.now())
-            .orElseThrow { throw BaseException(BaseErrorCodeException.NOT_CURRENT_ATTENDANCE) }
     }
 
     data class AttendanceRegisterRequest(
@@ -92,4 +92,5 @@ class AttendanceService(val attendanceEventRepository: AttendanceEventRepository
         }
         return map
     }
+
 }

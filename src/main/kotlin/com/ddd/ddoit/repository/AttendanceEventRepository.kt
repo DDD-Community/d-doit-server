@@ -7,6 +7,6 @@ import java.util.*
 
 interface AttendanceEventRepository: JpaRepository<AttendanceEvent, Long> {
 
-    fun findByGroupIdAndEndDateTimeAfter(groupId: Long, endDateTime: LocalDateTime): Optional<AttendanceEvent>
+    fun findByGroupIdAndEndDateTimeAfter(groupId: Long, endDateTime: LocalDateTime): AttendanceEvent?
 
 }
