@@ -5,6 +5,7 @@ import java.time.LocalDateTime
 
 data class AttendanceResponse(
     val status: Boolean,
+    val attendanceId: Long?,
     val endDateTime: LocalDateTime?,
     val certification: String?
 )
@@ -13,7 +14,7 @@ data class AttendanceResponse(
     companion object {
 
         fun toEntity(event: AttendanceEvent?): AttendanceResponse {
-            return event?.let { AttendanceResponse(true, it.endDateTime, it.certification) } ?: AttendanceResponse(false, null, null)
+            return event?.let { AttendanceResponse( true, it.id, it.endDateTime, it.certification) } ?: AttendanceResponse(false, null, null, null)
         }
     }
 
