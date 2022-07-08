@@ -42,12 +42,13 @@ jobs:
     - name: Branch-based environment variables that rock
       uses: iamtheyammer/branch-env-vars@v1.1.3
       with:
+        bevOverwrite: true
         FILE_DIR: |
           master:prod
           dev:dev
 
     - name: echo variables
-      run: echo ${FILE_DIR}
+      run: echo $FILE_DIR
 
 
     - name: openAPI3.yaml S3 이동
