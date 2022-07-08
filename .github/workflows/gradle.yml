@@ -42,7 +42,7 @@ jobs:
         bevOverwrite: true
         FILE_DIR: |
           master:prod
-          dev:dev
+          develop:dev
 
     - name: echo variables
       run: echo ${{env.FILE_DIR}}
