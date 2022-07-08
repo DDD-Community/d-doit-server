@@ -32,11 +32,8 @@ jobs:
     - name: AWS CONFIG
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        # AWS Access Key ID. This input is required if running in the GitHub hosted environment. It is optional if running in a self-hosted environment that already has AWS credentials, for example on an EC2 instance.
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        # AWS Secret Access Key. This input is required if running in the GitHub hosted environment. It is optional if running in a self-hosted environment that already has AWS credentials, for example on an EC2 instance.
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        # AWS Region, e.g. us-east-2
         aws-region:  ap-northeast-2
 
     - name: Branch-based environment variables that rock
@@ -48,7 +45,7 @@ jobs:
           dev:dev
 
     - name: echo variables
-      run: echo $FILE_DIR
+      run: echo ${{env.FILE_DIR}}
 
 
     - name: openAPI3.yaml S3 이동
