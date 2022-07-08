@@ -47,7 +47,7 @@ jobs:
           dev:dev
 
     - name: echo variables
-      run: echo ${{FILE_DIR}}
+      run: echo ${FILE_DIR}
 
 
     - name: openAPI3.yaml S3 이동
