@@ -6,7 +6,6 @@ import javax.persistence.*
 //그룹
 @Entity
 @DynamicUpdate
-@Table(name = "Groups")
 class Group(
     val name: String,
     var description: String,
