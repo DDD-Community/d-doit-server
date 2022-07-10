@@ -1,5 +1,6 @@
 package com.ddd.ddoit.config
 
+import com.ddd.ddoit.jwt.JwtAuthenticationEntryPoint
 import com.ddd.ddoit.jwt.JwtAuthenticationFilter
 import com.ddd.ddoit.jwt.JwtTokenProvider
 import org.springframework.context.annotation.Bean
@@ -10,11 +11,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import javax.servlet.http.HttpServletResponse
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(jsr250Enabled = true)
-class SecurityConfig(var jwtTokenProvider: JwtTokenProvider) : WebSecurityConfigurerAdapter(){
+class SecurityConfig(var jwtTokenProvider: JwtTokenProvider, var jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint) : WebSecurityConfigurerAdapter(){
 
     override fun configure(http: HttpSecurity) {
         http.csrf().disable()
@@ -24,11 +24,7 @@ class SecurityConfig(var jwtTokenProvider: JwtTokenProvider) : WebSecurityConfig
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint { _, res, ex ->
-                    run {
-                        res.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.message)
-                    }
-                } //인증 실패시 처리
+                    .authenticationEntryPoint(jwtAuthenticationEntryPoint)//인증 실패시 처리
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

@@ -3,14 +3,20 @@ spring:
     console:
       enabled: true
   jpa:
+    database-platform: org.hibernate.dialect.MySQL57Dialect
     show-sql: true
+    defer-datasource-initialization: true
     properties:
       hibernate:
-        dialects: org.hibernate.dialect.MySQL57Dialect
         format_sql: true
     generate-ddl: true
     hibernate:
-        ddl-auto: create
-  flyway:
-    enabled: true
-    baseline-on-migrate: true
+        ddl-auto: 'create'
+  datasource:
+    url: jdbc:h2:mem:testdb2;MODE=MYSQL
+
+security:
+  jwt:
+    token:
+      secret: "keyName123141asdafafvadssssqweqwuiasdy89pgadhyuiadgvjnk"
+      expired-time: 1440 #분단위로 기록 토큰 만료일 1하루임

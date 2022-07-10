@@ -1,8 +1,10 @@
 package com.ddd.ddoit.jwt
 
+import com.ddd.ddoit.dto.SocialType
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -15,22 +17,23 @@ import javax.servlet.http.HttpServletRequest
 @Component
 class JwtTokenProvider(val userDetailsService: UserDetailsService) {
 
-    companion object {
-        const val JWT_SECRET = "keyName123141asdafafvadssssqweqwuiasdy89pgadhyuiadgvjnk"
-        const val JWT_EXPIRED_TIME = "100"
-    }
+    @Value("\${security.jwt.token.secret}")
+    lateinit var JWT_SECRET: String
+
+    @Value("\${security.jwt.token.expired-time}")
+    lateinit var JWT_EXPIRED_TIME: String
 
     fun getSignKey(): Key {
         return Keys.hmacShaKeyFor(JWT_SECRET.toByteArray(Charsets.UTF_8))
     }
 
-    fun createToken(email: String, roles: List<String>?): String{
-        val claims = Jwts.claims().setSubject(email)
+    fun createToken(socialId: String, socialType: SocialType, roles: List<String>?): String{
+        val claims = Jwts.claims().setSubject(socialType.code+"_"+socialId)
         claims["roles"] = roles
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(Date())
-                .setExpiration(Date(System.currentTimeMillis()+60*24*1000))
+                .setExpiration(Date(System.currentTimeMillis()+JWT_EXPIRED_TIME.toInt()*60*1000))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact()
     }

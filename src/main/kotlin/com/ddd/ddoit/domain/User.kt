@@ -1,16 +1,21 @@
 package com.ddd.ddoit.domain
 
+import com.ddd.ddoit.dto.SocialType
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity
-class User(name: String, email: String, social: String) : UserDetails {
-
+class User(
+    name: String,
+    email: String,
+    @Enumerated(EnumType.STRING)
+    var social: SocialType,
+    val socialId: String
+) : UserDetails
+{
     @Id
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
@@ -18,7 +23,11 @@ class User(name: String, email: String, social: String) : UserDetails {
 
     var email: String = email
 
-    var social: String = social
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    var groupInfo: MutableList<GroupInfo> = arrayListOf()
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    var attendance: MutableList<Attendance> = arrayListOf()
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority>? {
         return null
@@ -46,5 +55,20 @@ class User(name: String, email: String, social: String) : UserDetails {
 
     override fun isEnabled(): Boolean {
         return true
+    }
+
+    fun addGroupInfo(info: GroupInfo) {
+        groupInfo.add(info)
+        info.user = this
+    }
+
+    fun removeGroupInfo(info: GroupInfo) {
+        groupInfo.remove(info)
+        info.user = null
+    }
+
+    fun addAttendance(attendance: Attendance){
+        attendance.user = this
+        this.attendance.add(attendance)
     }
 }

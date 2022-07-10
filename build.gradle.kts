@@ -33,7 +33,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("org.flywaydb:flyway-core")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
@@ -54,6 +53,15 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("com.epages:restdocs-api-spec-mockmvc:0.16.0")
+}
+
+tasks.named<BootJar>("bootJar") {
+	launchScript()
+}
+
+tasks.named<Jar>("jar") {
+	enabled = false
 }
 
 tasks.withType<KotlinCompile> {
@@ -64,7 +72,7 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.build{
-	dependsOn("copyDocs")
+	dependsOn("openapi3")
 }
 
 
@@ -81,22 +89,10 @@ tasks.asciidoctor {
 	dependsOn(tasks.test)
 }
 
-tasks.register<Copy>("copyDocs"){
-	dependsOn(tasks.asciidoctor)
-	destinationDir = file(".")
-	from(tasks.asciidoctor.get().outputDir){
-		into("src/main/resources/static/docs")
-	}
-}
-
-
-tasks.register<Copy>("copyOasToSwagger") {
-	delete("src/main/resources/static/swagger-ui/openapi3.yaml") // 기존 yaml 파일 삭제
-	from("$buildDir/api-spec/openapi3.yaml") // 복제할 yaml 파일 타겟팅
-	into("src/main/resources/static/swagger-ui/.") // 타겟 디렉토리로 파일 복제
-	dependsOn("openapi3") // openapi3 task가 먼저 실행되도록 설정
-}
-
-tasks.named<BootJar>("bootJar") {
-	launchScript()
+openapi3 {
+	this.setServer("http://ec2-3-37-168-145.ap-northeast-2.compute.amazonaws.com/")
+	title = "오늘이야 서버 API 문서"
+	description = "오늘이야 서버에 API에 관련한 모든 걸 여기서 관리합니다. "
+	version = "0.1.0"
+	format = "yaml"
 }
