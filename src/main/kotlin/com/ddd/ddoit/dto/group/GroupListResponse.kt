@@ -8,7 +8,7 @@ data class GroupListResponse(
     val id: Long,
     val name: String,
     val description: String,
-    val roles: GroupRoleType?
+    val role: GroupRoleType?
 ){
     companion object{
         fun toEntityList(group: Group?, info: GroupInfo): GroupListResponse? {

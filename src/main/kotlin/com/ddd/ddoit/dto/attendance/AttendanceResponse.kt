@@ -14,7 +14,8 @@ data class AttendanceResponse(
     companion object {
 
         fun toEntity(event: AttendanceEvent?): AttendanceResponse {
-            return event?.let { AttendanceResponse( true, it.id, it.endDateTime, it.certification) } ?: AttendanceResponse(false, null, null, null)
+            return event?.let { AttendanceResponse( true, it.id, it.endDateTime, it.certification) }
+                ?: AttendanceResponse(false, null, null, null)
         }
     }
 
