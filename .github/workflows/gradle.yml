@@ -15,6 +15,17 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Branch-based environment variables that rock
+        uses: iamtheyammer/branch-env-vars@v1.1.3
+        with:
+          bevOverwrite: true
+          FILE_DIR: |
+            master:prod
+            develop:dev
+
+      - name: echo variables
+        run: echo ${{env.FILE_DIR}}
+
     - uses: actions/checkout@v3
     - name: Set up JDK 11
       uses: actions/setup-java@v3
@@ -36,29 +47,17 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region:  ap-northeast-2
 
-    - name: Branch-based environment variables that rock
-      uses: iamtheyammer/branch-env-vars@v1.1.3
-      with:
-        bevOverwrite: true
-        FILE_DIR: |
-          master:prod
-          develop:dev
-
-    - name: echo variables
-      run: echo ${{env.FILE_DIR}}
-
-
     - name: openAPI3.yaml S3 이동
-      run: aws s3 sync ./build/api-spec/ s3://d-doit-deploy/dev/
+      run: aws s3 sync ./build/api-spec/ s3://d-doit-deploy/${{env.FILE_DIR}}/
 
     - name: S3 Sync
       run: |
           aws s3 sync \
           --acl private \
-          ./build/zip/ s3://d-doit-deploy/dev 
+          ./build/zip/ s3://d-doit-deploy/${{env.FILE_DIR}} 
     
     - name: code Deploy
       run: |
         aws deploy create-deployment --application-name d-doit-deploy \
-        --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name d-doit-deploy-dev \
-        --s3-location bucket=${{secrets.AWS_S3_BUCKET}},bundleType=zip,key=dev/deploy.zip
+        --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name d-doit-deploy-${{env.FILE_DIR}} \
+        --s3-location bucket=${{secrets.AWS_S3_BUCKET}},bundleType=zip,key=${{env.FILE_DIR}}/deploy.zip
