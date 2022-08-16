@@ -11,8 +11,8 @@ then
   DEPLOY_FOLDER="prod"
 fi
 
-cp *.jar ./$DEPLOY_FOLDER/
-rm *.jar *.yml
+cp *.jar ../$DEPLOY_FOLDER/
+rm -rf *.jar *.yml ./script
 
 CURRENT_PID=$(lsof -i :$DEPLOYMENT_PORT | grep "LISTEN" | awk '{print $2}')
 
