@@ -13,4 +13,14 @@ fi
 echo "##############"
 echo "> 배포 시작"
 echo "##############"
-systemctl start d-doit.service
+if [ "$DEPLOYMENT_GROUP_NAME" == "d-doit-deploy-prod" ]
+then
+  echo "운영 배포 시작"
+  systemctl start d-doit-prod.service
+fi
+
+if [ "$DEPLOYMENT_GROUP_NAME" == "d-doit-deploy-dev" ]
+then
+  echo "개발 배포 시작."
+  systemctl start d-doit.service
+fi
