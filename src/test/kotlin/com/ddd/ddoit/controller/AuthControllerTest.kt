@@ -82,9 +82,10 @@ class AuthControllerTest {
     @Test
     @DisplayName("회원가입 테스트")
     fun signUp() {
-        given(userService.signupUser(request)).willReturn(1L)
+        given(userService.signupUser(request, "kakao")).willReturn(1L)
 
         mockMvc.perform(post("/signup")
+            .queryParam("social", "kakao")
             .content(body)
             .contentType(MediaType.APPLICATION_JSON)
             )
@@ -107,6 +108,7 @@ class AuthControllerTest {
         given(jwtTokenProvider.createToken(user.socialId, SocialType.KAKAO, listOf())).willReturn("abcd")
 
         mockMvc.perform(post("/login")
+            .queryParam("social", "kakao")
             .content(body)
             .contentType(MediaType.APPLICATION_JSON)
             )
@@ -130,6 +132,7 @@ class AuthControllerTest {
         given(userService.login(failRequest)).willThrow(BaseException(BaseErrorCodeException.INVALID_USER))
 
         mockMvc.perform(post("/login")
+            .queryParam("social", "kakao")
             .content(body)
             .contentType(MediaType.APPLICATION_JSON)
         )

@@ -11,8 +11,11 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Component
 import java.security.Key
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import java.util.*
 import javax.servlet.http.HttpServletRequest
+
 
 @Component
 class JwtTokenProvider(val userDetailsService: UserDetailsService) {
@@ -20,7 +23,7 @@ class JwtTokenProvider(val userDetailsService: UserDetailsService) {
     @Value("\${security.jwt.token.secret}")
     lateinit var JWT_SECRET: String
 
-    @Value("\${security.jwt.token.expired-time}")
+    @Value("\${security.jwt.token.expired-day}")
     lateinit var JWT_EXPIRED_TIME: String
 
     fun getSignKey(): Key {
@@ -30,10 +33,12 @@ class JwtTokenProvider(val userDetailsService: UserDetailsService) {
     fun createToken(socialId: String, socialType: SocialType, roles: List<String>?): String{
         val claims = Jwts.claims().setSubject(socialType.code+"_"+socialId)
         claims["roles"] = roles
+        val issuedAt: Instant = Instant.now().truncatedTo(ChronoUnit.SECONDS)
+        val expiration: Instant = issuedAt.plus(JWT_EXPIRED_TIME.toLong(), ChronoUnit.DAYS)
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(Date())
-                .setExpiration(Date(System.currentTimeMillis()+JWT_EXPIRED_TIME.toInt()*60*1000))
+                .setIssuedAt(Date.from(issuedAt))
+                .setExpiration(Date.from(expiration))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact()
     }

@@ -17,8 +17,8 @@ class UserService(var userRepository: UserRepository) : UserDetailsService {
         return userRepository.findBySocialIdAndSocial(array[1], SocialType.KAKAO)?: throw BaseException(BaseErrorCodeException.USER_NOT_FOUND)
     }
 
-    fun signupUser(req: AuthRequest): Long? {
-       return userRepository.save(User(name = req.name, email = req.email, social = SocialType.KAKAO, socialId = req.socialId)).id
+    fun signupUser(req: AuthRequest, type: String): Long? {
+       return userRepository.save(User(name = req.name, email = req.email, social = SocialType.byCode(type), socialId = req.socialId)).id
     }
 
     fun login(req: AuthRequest): User {
