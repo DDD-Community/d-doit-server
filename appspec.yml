@@ -10,9 +10,6 @@ permissions:
     group: ec2-user
     mode: 755
 hooks:
-  BeforeInstall:
-    - location: /script/before_install.sh
-      runas: root
   AfterInstall:
     - location: /script/deploy.sh
       timeout: 60
@@ -20,4 +17,4 @@ hooks:
   ApplicationStart:
     - location: /script/swagger.sh
       timeout: 30
-      runas: ec2-user
+      runas: root
