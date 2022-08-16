@@ -1,11 +1,11 @@
-DEPLOYMENT_NAME = "개발"
-DEPLOYMENT_PORT = 8080
-SERVICE_NAME = "d-doit"
+DEPLOYMENT_NAME="개발"
+DEPLOYMENT_PORT=8080
+SERVICE_NAME="d-doit"
 if [ "$DEPLOYMENT_GROUP_NAME" == "d-doit-deploy-prod" ]
 then
-  DEPLOYMENT_NAME = "운영"
-  DEPLOYMENT_PORT = 8080
-  SERVICE_NAME = "d-doit-prod"
+  DEPLOYMENT_NAME="운영"
+  DEPLOYMENT_PORT=8080
+  SERVICE_NAME="d-doit-prod"
 fi
 
 CURRENT_PID=$(lsof -i :$DEPLOYMENT_PORT | grep "LISTEN" | awk '{print $2}')
