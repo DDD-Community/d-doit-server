@@ -12,11 +12,11 @@ permissions:
 hooks:
   BeforeInstall:
     - location: /script/before_install.sh
-      runas: ec2-user
+      runas: root
   AfterInstall:
     - location: /script/deploy.sh
       timeout: 60
-      runas: ec2-user
+      runas: root
   ApplicationStart:
     - location: /script/swagger.sh
       timeout: 30

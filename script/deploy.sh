@@ -12,8 +12,6 @@ then
 fi
 
 cd /home/ec2-user/app
-echo $(pwd)
-
 cp *.jar ./$DEPLOY_FOLDER/
 rm -rf *.jar *.yml ./script
 
