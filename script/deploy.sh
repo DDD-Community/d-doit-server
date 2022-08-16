@@ -11,7 +11,7 @@ then
   DEPLOY_FOLDER="prod"
 fi
 
-cd ~/app
+#cd /home/ec2-user/app
 echo $(pwd)
 
 cp *.jar ./$DEPLOY_FOLDER/

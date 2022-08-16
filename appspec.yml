@@ -11,13 +11,13 @@ permissions:
     mode: 755
 hooks:
   BeforeInstall:
-    - location: ./script/before_install.sh
+    - location: /script/before_install.sh
       runas: ec2-user
   AfterInstall:
-    - location: ./script/deploy.sh
+    - location: /script/deploy.sh
       timeout: 60
       runas: ec2-user
   ApplicationStart:
-    - location: ./script/swagger.sh
+    - location: /script/swagger.sh
       timeout: 30
       runas: ec2-user
