@@ -11,6 +11,7 @@ then
   DEPLOY_FOLDER="prod"
 fi
 
+echo $(pwd)
 cp *.jar ./$DEPLOY_FOLDER/
 rm -rf *.jar *.yml ./script
 
