@@ -32,7 +32,7 @@ class AuthController(val userService: UserService, val jwtTokenProvider: JwtToke
     @PostMapping("/login")
     fun login(@RequestBody req: AuthRequest, @RequestParam social: String): ResponseEntity<HttpResponse<String>>{
         return ResponseEntity(HttpResponse(
-            200, "로그인 완료", jwtTokenProvider.createToken(userService.login(req).socialId, SocialType.byCode(social), listOf())
+            200, "로그인 완료", jwtTokenProvider.createToken(userService.login(req, social).socialId, SocialType.byCode(social), listOf())
         ), HttpStatus.OK)
     }
 
