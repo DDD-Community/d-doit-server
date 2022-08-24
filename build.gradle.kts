@@ -54,6 +54,9 @@ dependencies {
 	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("com.epages:restdocs-api-spec-mockmvc:0.16.0")
+
+	//Logging
+	implementation("com.github.maricn:logback-slack-appender:1.6.1")
 }
 
 tasks.named<BootJar>("bootJar") {
