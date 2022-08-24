@@ -82,9 +82,10 @@ class AuthControllerTest {
     @Test
     @DisplayName("회원가입 테스트")
     fun signUp() {
-        given(userService.signupUser(request)).willReturn(1L)
+        given(userService.signupUser(request, "kakao")).willReturn(1L)
 
         mockMvc.perform(post("/signup")
+            .queryParam("social", "kakao")
             .content(body)
             .contentType(MediaType.APPLICATION_JSON)
             )
@@ -103,10 +104,11 @@ class AuthControllerTest {
     @Test
     @DisplayName("로그인 테스트")
     fun login() {
-        given(userService.login(request)).willReturn(user)
+        given(userService.login(request, "kakao")).willReturn(user)
         given(jwtTokenProvider.createToken(user.socialId, SocialType.KAKAO, listOf())).willReturn("abcd")
 
         mockMvc.perform(post("/login")
+            .queryParam("social", "kakao")
             .content(body)
             .contentType(MediaType.APPLICATION_JSON)
             )
@@ -127,9 +129,10 @@ class AuthControllerTest {
         val failRequest = AuthRequest("test@test.com", "테스트", "12324")
         val body = jacksonObjectMapper().writeValueAsString(failRequest)
 
-        given(userService.login(failRequest)).willThrow(BaseException(BaseErrorCodeException.INVALID_USER))
+        given(userService.login(failRequest, "kakao")).willThrow(BaseException(BaseErrorCodeException.INVALID_USER))
 
         mockMvc.perform(post("/login")
+            .queryParam("social", "kakao")
             .content(body)
             .contentType(MediaType.APPLICATION_JSON)
         )
